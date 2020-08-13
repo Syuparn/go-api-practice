@@ -6,8 +6,8 @@ import (
 	"github.com/Syuparn/go-api-practice/client/domain"
 )
 
-const _HEADER_FORMAT = "%36s %12s %3s"
-const _RECORD_FORMAT = "%36s %12s %3d"
+const _HEADER_FORMAT = "%36s %12s %3s\n"
+const _RECORD_FORMAT = "%36s %12s %3d\n"
 
 func ShowPersons(persons []domain.Person) {
 	fmt.Printf(_HEADER_FORMAT, "id", "name", "age")

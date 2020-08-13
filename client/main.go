@@ -11,7 +11,8 @@ import (
 
 func main() {
 	if len(os.Args) < 2 {
-		fmt.Errorf("sub command must be required. (create|read|update|delete)")
+		fmt.Println("sub command must be required. (create|read|update|delete)")
+		return
 	}
 
 	personFactory := api.NewPersonFactory()
@@ -21,6 +22,8 @@ func main() {
 		age, name := argsForCreate()
 		con := controller.NewCreateController(personFactory)
 		con.Create(age, name)
+	default:
+		fmt.Println("sub command must be (create|read|update|delete)")
 	}
 }
 
