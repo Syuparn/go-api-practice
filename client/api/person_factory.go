@@ -2,18 +2,19 @@ package api
 
 import (
 	"bytes"
-	"domain"
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
+
+	"github.com/Syuparn/go-api-practice/client/domain"
 )
 
 type PersonFactory struct {
 	client *http.Client
 }
 
-func NewPersonFactory() PersonFactory {
-	return PersonFactory{client: &http.Client{}}
+func NewPersonFactory() *PersonFactory {
+	return &PersonFactory{client: &http.Client{}}
 }
 
 func (f *PersonFactory) Create(
@@ -60,3 +61,8 @@ type _ReqPost struct {
 func newReqPost(name domain.Name, age domain.Age) _ReqPost {
 	return _ReqPost{Age: age, Name: name}
 }
+
+// check if PersonFactory really implements domain.PersonFactory
+var (
+	_ domain.PersonFactory = NewPersonFactory()
+)

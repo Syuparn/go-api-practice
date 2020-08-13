@@ -1,4 +1,4 @@
-module domain
+module github.com/Syuparn/go-api-practice/client/domain
 
 go 1.13
 

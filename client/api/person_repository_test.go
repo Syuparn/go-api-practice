@@ -1,8 +1,9 @@
 package api
 
 import (
-	"domain"
 	"testing"
+
+	"github.com/Syuparn/go-api-practice/client/domain"
 
 	"github.com/gofrs/uuid"
 )

@@ -1,10 +1,11 @@
 package api
 
 import (
-	"domain"
 	"fmt"
 	"net/http"
 	"testing"
+
+	"github.com/Syuparn/go-api-practice/client/domain"
 
 	"gopkg.in/h2non/gock.v1"
 )
