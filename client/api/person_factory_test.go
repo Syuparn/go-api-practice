@@ -11,8 +11,6 @@ import (
 )
 
 func TestPersonFactoryCreate(t *testing.T) {
-	const SAMPLE_ID = 1
-
 	tests := []struct {
 		age      int
 		name     string

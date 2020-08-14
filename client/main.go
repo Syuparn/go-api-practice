@@ -16,12 +16,22 @@ func main() {
 	}
 
 	personFactory := api.NewPersonFactory()
+	personRepository := api.NewPersonRepository()
 
 	switch os.Args[1] {
 	case "create":
 		age, name := argsForCreate()
 		con := controller.NewCreateController(personFactory)
-		con.Create(age, name)
+		err := con.Create(age, name)
+		if err != nil {
+			fmt.Println(err.Error())
+		}
+	case "read":
+		con := controller.NewReadController(personRepository)
+		err := con.Read()
+		if err != nil {
+			fmt.Println(err.Error())
+		}
 	default:
 		fmt.Println("sub command must be (create|read|update|delete)")
 	}
