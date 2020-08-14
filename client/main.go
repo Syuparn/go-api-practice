@@ -32,6 +32,13 @@ func main() {
 		if err != nil {
 			fmt.Println(err.Error())
 		}
+	case "update":
+		age, id, name := argsForUpdate()
+		con := controller.NewUpdateController(personRepository)
+		err := con.Update(age, id, name)
+		if err != nil {
+			fmt.Println(err.Error())
+		}
 	default:
 		fmt.Println("sub command must be (create|read|update|delete)")
 	}
@@ -44,4 +51,14 @@ func argsForCreate() (int, string) {
 	f.Parse(os.Args[2:])
 
 	return *age, *name
+}
+
+func argsForUpdate() (int, string, string) {
+	f := flag.NewFlagSet("update", flag.ExitOnError)
+	age := f.Int("age", 0, "age of person")
+	name := f.String("name", "Anon", "name of person")
+	id := f.String("id", "00000000-0000-0000-0000-000000000000", "uuid of person")
+	f.Parse(os.Args[2:])
+
+	return *age, *id, *name
 }

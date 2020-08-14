@@ -15,7 +15,7 @@ var MOCK_UUID0 = uuid.Must(uuid.NewV4())
 var MOCK_UUID1 = uuid.Must(uuid.NewV4())
 var MOCK_UUID2 = uuid.Must(uuid.NewV4())
 
-func TestPersonFactoryRead(t *testing.T) {
+func TestPersonRepositoryRead(t *testing.T) {
 	tests := []struct {
 		response []map[string]string
 		expected []domain.Person
@@ -60,12 +60,40 @@ func TestPersonFactoryRead(t *testing.T) {
 
 		t.Run(fmt.Sprintf("%d: response: %s", i, tt.response),
 			func(t *testing.T) {
-				testPersonFactoryRead(t, tt.response, tt.expected)
+				testPersonRepositoryRead(t, tt.response, tt.expected)
 			})
 	}
 }
 
-func testPersonFactoryRead(
+func TestPersonRepositoryUpdate(t *testing.T) {
+	tests := []struct {
+		age      int
+		id       uuid.UUID
+		name     string
+		expected domain.Person
+	}{
+		{
+			20,
+			MOCK_UUID0,
+			"Taro",
+			newPerson("Taro", 20, MOCK_UUID0),
+		},
+	}
+
+	for i, tt := range tests {
+		// move range scope to local scope
+		tt := tt
+		i := i
+
+		t.Run(fmt.Sprintf("%d: id %s, age %d, name %s", i, tt.id, tt.age, tt.name),
+			func(t *testing.T) {
+				testPersonRepositoryUpdate(
+					t, tt.id, tt.name, tt.age, tt.expected)
+			})
+	}
+}
+
+func testPersonRepositoryRead(
 	t *testing.T,
 	response []map[string]string,
 	expected []domain.Person,
@@ -99,6 +127,36 @@ func testPersonFactoryRead(
 	for i, person := range persons {
 		comparePerson(t, person, expected[i])
 	}
+}
+
+func testPersonRepositoryUpdate(
+	t *testing.T,
+	id uuid.UUID,
+	name string,
+	age int,
+	expected domain.Person,
+) {
+	defer gock.Off()
+
+	client := &http.Client{}
+	gock.New(API_DOMAIN).
+		Put(fmt.Sprintf("/persons/%s", id.String())).
+		Reply(200).
+		JSON(map[string]string{
+			"id":   MOCK_UUID0.String(),
+			"name": string(name),
+			"age":  fmt.Sprintf("%d", age),
+		})
+	gock.InterceptClient(client)
+
+	personRepository := &PersonRepository{client: client}
+	person, err := personRepository.Update(id, name, age)
+
+	if err != nil {
+		t.Fatalf(err.Error())
+	}
+
+	comparePerson(t, person, expected)
 }
 
 func newAge(age int) domain.Age {

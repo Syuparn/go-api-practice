@@ -10,4 +10,5 @@ replace (
 require (
 	github.com/Syuparn/go-api-practice/client/domain v0.0.0
 	github.com/Syuparn/go-api-practice/client/view v0.0.0
+	github.com/gofrs/uuid v3.3.0+incompatible
 )
