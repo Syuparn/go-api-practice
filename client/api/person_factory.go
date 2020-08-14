@@ -18,12 +18,22 @@ func NewPersonFactory() *PersonFactory {
 }
 
 func (f *PersonFactory) Create(
-	name domain.Name,
-	age domain.Age,
+	name string,
+	age int,
 ) (domain.Person, error) {
 	const END_POINT = API_DOMAIN + "/persons"
 
-	reqJson, err := json.Marshal(newReqPost(name, age))
+	age_, err := domain.NewAge(age)
+	if err != nil {
+		return domain.Person{}, err
+	}
+
+	name_, err := domain.NewName(name)
+	if err != nil {
+		return domain.Person{}, err
+	}
+
+	reqJson, err := json.Marshal(newReqPost(name_, age_))
 	if err != nil {
 		return domain.Person{}, err
 	}

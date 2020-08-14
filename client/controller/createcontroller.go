@@ -14,18 +14,7 @@ func NewCreateController(factory domain.PersonFactory) CreateController {
 }
 
 func (c *CreateController) Create(age int, name string) error {
-	// FIXME: make Age and Name in factory
-	age_, err := domain.NewAge(age)
-	if err != nil {
-		return err
-	}
-
-	name_, err := domain.NewName(name)
-	if err != nil {
-		return err
-	}
-
-	person, err := c.personFactory.Create(name_, age_)
+	person, err := c.personFactory.Create(name, age)
 	if err != nil {
 		return err
 	}

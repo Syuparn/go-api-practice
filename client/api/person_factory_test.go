@@ -14,13 +14,13 @@ func TestPersonFactoryCreate(t *testing.T) {
 	const SAMPLE_ID = 1
 
 	tests := []struct {
-		age      domain.Age
-		name     domain.Name
+		age      int
+		name     string
 		expected domain.Person
 	}{
 		{
-			name:     newName("Taro"),
-			age:      newAge(20),
+			name:     "Taro",
+			age:      20,
 			expected: newPerson("Taro", 20, MOCK_UUID0),
 		},
 	}
@@ -39,8 +39,8 @@ func TestPersonFactoryCreate(t *testing.T) {
 
 func testPersonFactoryCreate(
 	t *testing.T,
-	age domain.Age,
-	name domain.Name,
+	age int,
+	name string,
 	expected domain.Person,
 ) {
 	defer gock.Off()

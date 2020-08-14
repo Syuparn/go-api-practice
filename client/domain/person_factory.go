@@ -1,5 +1,5 @@
 package domain
 
 type PersonFactory interface {
-	Create(name Name, age Age) (Person, error)
+	Create(name string, age int) (Person, error)
 }
