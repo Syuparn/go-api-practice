@@ -29,6 +29,11 @@ func (f *PersonRepository) Update(id uuid.UUID, age int, name string) (Person, e
 	return person, nil
 }
 
+func (f *PersonRepository) Delete(id uuid.UUID) error {
+	delete(personDB, id)
+	return nil
+}
+
 func (f *PersonRepository) Exists(id uuid.UUID) bool {
 	_, ok := personDB[id]
 	return ok

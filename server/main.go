@@ -114,4 +114,24 @@ func updatePerson(w http.ResponseWriter, r *http.Request) {
 	w.Write(resJSON)
 }
 
-func deletePerson(w http.ResponseWriter, r *http.Request) {}
+func deletePerson(w http.ResponseWriter, r *http.Request) {
+	idStr := chi.URLParam(r, "personID")
+	fmt.Println("DELETE /persons/" + idStr)
+
+	id, err := uuid.FromString(idStr)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte(errJSON(err)))
+		return
+	}
+
+	err = NewPersonRepository().Delete(id)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(errJSON(err)))
+		return
+	}
+
+	fmt.Println("send response")
+	w.WriteHeader(http.StatusNoContent)
+}
