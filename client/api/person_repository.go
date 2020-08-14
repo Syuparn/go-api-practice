@@ -108,6 +108,22 @@ func newReqPut(name domain.Name, age domain.Age) _ReqPut {
 	return _ReqPut{Age: age, Name: name}
 }
 
+func (r *PersonRepository) Delete(id uuid.UUID) error {
+	END_POINT := API_DOMAIN + fmt.Sprintf("/persons/%s", id.String())
+
+	req, err := http.NewRequest(http.MethodDelete, END_POINT, nil)
+	if err != nil {
+		return err
+	}
+
+	_, err = r.client.Do(req)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 // check if PersonRepository really implements domain.PersonRepository
 var (
 	_ domain.PersonRepository = NewPersonRepository()

@@ -39,6 +39,13 @@ func main() {
 		if err != nil {
 			fmt.Println(err.Error())
 		}
+	case "delete":
+		id := argsForDelete()
+		con := controller.NewDeleteController(personRepository)
+		err := con.Delete(id)
+		if err != nil {
+			fmt.Println(err.Error())
+		}
 	default:
 		fmt.Println("sub command must be (create|read|update|delete)")
 	}
@@ -61,4 +68,12 @@ func argsForUpdate() (int, string, string) {
 	f.Parse(os.Args[2:])
 
 	return *age, *id, *name
+}
+
+func argsForDelete() string {
+	f := flag.NewFlagSet("delete", flag.ExitOnError)
+	id := f.String("id", "00000000-0000-0000-0000-000000000000", "uuid of person")
+	f.Parse(os.Args[2:])
+
+	return *id
 }

@@ -93,6 +93,10 @@ func TestPersonRepositoryUpdate(t *testing.T) {
 	}
 }
 
+func TestPersonRepositoryDelete(t *testing.T) {
+	testPersonRepositoryDelete(t, MOCK_UUID0)
+}
+
 func testPersonRepositoryRead(
 	t *testing.T,
 	response []map[string]string,
@@ -157,6 +161,23 @@ func testPersonRepositoryUpdate(
 	}
 
 	comparePerson(t, person, expected)
+}
+
+func testPersonRepositoryDelete(t *testing.T, id uuid.UUID) {
+	defer gock.Off()
+
+	client := &http.Client{}
+	gock.New(API_DOMAIN).
+		Delete(fmt.Sprintf("/persons/%s", id.String())).
+		Reply(204)
+	gock.InterceptClient(client)
+
+	personRepository := &PersonRepository{client: client}
+	err := personRepository.Delete(id)
+
+	if err != nil {
+		t.Fatalf(err.Error())
+	}
 }
 
 func newAge(age int) domain.Age {
