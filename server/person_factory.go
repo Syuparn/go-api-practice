@@ -3,7 +3,7 @@ package main
 import "github.com/gofrs/uuid"
 
 // FIXME: make persistent!
-var personDB = []Person{}
+var personDB = map[uuid.UUID]Person{}
 
 type PersonFactory struct{}
 
@@ -21,7 +21,7 @@ func (f *PersonFactory) Create(age int, name string) (Person, error) {
 
 	// register to db
 	// NOTE: currently no persistence
-	personDB = append(personDB, person)
+	personDB[person.ID] = person
 
 	return person, nil
 }

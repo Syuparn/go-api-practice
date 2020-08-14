@@ -39,7 +39,7 @@ func handlePostReq(w http.ResponseWriter, r *http.Request) (int, string, bool) {
 }
 
 func extractBody(r *http.Request) ([]byte, error) {
-	fmt.Print("got request: ")
+	fmt.Print("request body: ")
 
 	bodyLen, err := strconv.Atoi(r.Header.Get("Content-Length"))
 	if err != nil {

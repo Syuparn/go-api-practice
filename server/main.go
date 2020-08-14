@@ -22,6 +22,8 @@ func main() {
 }
 
 func createPerson(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("POST /persons")
+
 	age, name, ok := handlePostReq(w, r)
 	if !ok {
 		return
@@ -46,6 +48,27 @@ func createPerson(w http.ResponseWriter, r *http.Request) {
 	w.Write(resJSON)
 }
 
-func readPersons(w http.ResponseWriter, r *http.Request)  {}
+func readPersons(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("GET /persons")
+
+	persons, err := NewPersonRepository().Read()
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(errJSON(err)))
+		return
+	}
+
+	resJSON, err := getResJSON(persons)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(errJSON(err)))
+		return
+	}
+
+	fmt.Printf("send response: %s\n", string(resJSON))
+	w.WriteHeader(http.StatusOK)
+	w.Write(resJSON)
+}
+
 func updatePerson(w http.ResponseWriter, r *http.Request) {}
 func deletePerson(w http.ResponseWriter, r *http.Request) {}

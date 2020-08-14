@@ -30,6 +30,13 @@ $ ./client create -name Taro -age 20
 
 ## read
 
+```sh:
+$ ./client read
+                                  id         name age
+fbf8f037-07c5-4ac5-bcf2-5a8d8c860b41         Taro  20
+eda12a56-c7d6-4309-b65e-b95525ae1db8         John  25
+```
+
 ## update
 
 ## delete
