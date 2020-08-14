@@ -34,6 +34,10 @@ func (r *PersonRepository) Read() ([]domain.Person, error) {
 		return []domain.Person{}, err
 	}
 
+	if !resposeIsOk(res) {
+		return []domain.Person{}, fmt.Errorf(parseErrorRes(res))
+	}
+
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
 		return []domain.Person{}, err
@@ -85,6 +89,10 @@ func (r *PersonRepository) Update(
 		return domain.Person{}, err
 	}
 
+	if !resposeIsOk(res) {
+		return domain.Person{}, fmt.Errorf(parseErrorRes(res))
+	}
+
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
 		return domain.Person{}, err
@@ -116,9 +124,13 @@ func (r *PersonRepository) Delete(id uuid.UUID) error {
 		return err
 	}
 
-	_, err = r.client.Do(req)
+	res, err := r.client.Do(req)
 	if err != nil {
 		return err
+	}
+
+	if !resposeIsOk(res) {
+		return fmt.Errorf(parseErrorRes(res))
 	}
 
 	return nil

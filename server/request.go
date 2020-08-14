@@ -60,7 +60,3 @@ func extractBody(r *http.Request) ([]byte, error) {
 	fmt.Println(string(body))
 	return body, nil
 }
-
-func errJSON(err error) string {
-	return fmt.Sprintf(`{"error": "%s"}`, err.Error())
-}

@@ -46,3 +46,8 @@ $ ./client update -id 419b9dd6-d54a-434c-9239-0144177c117f -name jiro -age 21
 ```
 
 ## delete
+
+```sh:
+$ ./client delete -id 2e5cd52c-5d56-4269-8ef3-9d241e9e74dc
+delete successed
+```
