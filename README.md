@@ -39,4 +39,10 @@ eda12a56-c7d6-4309-b65e-b95525ae1db8         John  25
 
 ## update
 
+```sh:
+$ ./client update -id 419b9dd6-d54a-434c-9239-0144177c117f -name jiro -age 21
+                                  id         name age
+419b9dd6-d54a-434c-9239-0144177c117f         jiro  21
+```
+
 ## delete

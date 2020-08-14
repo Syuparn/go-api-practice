@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/go-chi/chi"
+	"github.com/gofrs/uuid"
 )
 
 func main() {
@@ -70,5 +71,47 @@ func readPersons(w http.ResponseWriter, r *http.Request) {
 	w.Write(resJSON)
 }
 
-func updatePerson(w http.ResponseWriter, r *http.Request) {}
+func updatePerson(w http.ResponseWriter, r *http.Request) {
+	idStr := chi.URLParam(r, "personID")
+	fmt.Println("PUT /persons/" + idStr)
+
+	id, err := uuid.FromString(idStr)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte(errJSON(err)))
+		return
+	}
+
+	age, name, ok := handlePutReq(w, r)
+	if !ok {
+		return
+	}
+
+	repo := NewPersonRepository()
+	ok = repo.Exists(id)
+	if !ok {
+		w.WriteHeader(http.StatusNotFound)
+		w.Write([]byte(errJSON(fmt.Errorf("id not found"))))
+		return
+	}
+
+	person, err := repo.Update(id, age, name)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte(errJSON(err)))
+		return
+	}
+
+	resJSON, err := putResJSON(person)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(errJSON(err)))
+		return
+	}
+
+	fmt.Printf("send response: %s\n", string(resJSON))
+	w.WriteHeader(http.StatusOK)
+	w.Write(resJSON)
+}
+
 func deletePerson(w http.ResponseWriter, r *http.Request) {}

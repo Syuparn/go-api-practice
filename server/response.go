@@ -13,3 +13,7 @@ func getResJSON(persons []Person) ([]byte, error) {
 	res := Response{Persons: persons}
 	return json.Marshal(res)
 }
+
+func putResJSON(person Person) ([]byte, error) {
+	return json.Marshal(person)
+}

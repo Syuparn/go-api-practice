@@ -38,6 +38,11 @@ func handlePostReq(w http.ResponseWriter, r *http.Request) (int, string, bool) {
 	return int(age), req.Name, true
 }
 
+func handlePutReq(w http.ResponseWriter, r *http.Request) (int, string, bool) {
+	// exactly same as POST request
+	return handlePostReq(w, r)
+}
+
 func extractBody(r *http.Request) ([]byte, error) {
 	fmt.Print("request body: ")
 
